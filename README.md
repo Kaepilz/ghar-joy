@@ -1,6 +1,36 @@
-# Welcome to your Lovable project
+# ShoppingGhar - Nepal's E-Commerce Marketplace
 
-## Project info
+A modern, vibrant e-commerce platform for buying and selling in Nepal. Built with React, TypeScript, Tailwind CSS, and Framer Motion.
+
+## 🚀 Features
+
+- **Beautiful UI**: Orange-themed design with smooth animations
+- **Gamified Experience**: Spin-to-win promotional wheel
+- **Product Browsing**: Category filtering, sorting, and search
+- **Shopping Cart**: Full cart management with coupon system
+- **Responsive Design**: Mobile-first, works on all devices
+- **Dark Mode**: Toggle between light and dark themes
+- **Seller Hub**: Platform for sellers to list products
+- **Service Hub**: Customer support and help center
+
+## 🎨 Design System
+
+- **Primary Color**: Orange (#FF6A00) - vibrant and energetic
+- **Theme**: Warm, trustworthy, modern
+- **Animations**: Framer Motion for smooth micro-interactions
+- **Components**: Built on shadcn/ui with custom variants
+
+## 📦 Tech Stack
+
+- **React 18** with TypeScript
+- **Vite** for blazing fast builds
+- **Tailwind CSS** for styling
+- **Framer Motion** for animations
+- **Lucide React** for icons
+- **React Router** for navigation
+- **shadcn/ui** component library
+
+## 🛠️ Getting Started
 
 **URL**: https://lovable.dev/projects/6c2347bf-e477-44e3-bce5-818a50a5f62b
 
@@ -50,15 +80,56 @@ npm run dev
 - Click on "New codespace" to launch a new Codespace environment.
 - Edit files directly within the Codespace and commit and push your changes once you're done.
 
-## What technologies are used for this project?
+## 📱 Pages
 
-This project is built with:
+- `/` - Homepage with hero, categories, and featured products
+- `/products` - Product listing with filters and sorting
+- `/product/:id` - Detailed product page
+- `/cart` - Shopping cart with checkout
+- `/sell` - Seller registration and onboarding
+- `/service-hub` - Customer support center
+- `/about` - About ShoppingGhar
+- `/login` - Authentication (demo UI)
+
+## 🎯 Mock Data
+
+All product data is stored locally in `src/lib/mockData.ts`:
+- 12 sample products across multiple categories
+- Product properties: id, title, price, condition, images, seller, rating, inventory
+- 6 product categories with icons
+
+## 🎨 Key Components
+
+- `Header` - Navigation with search, cart count, theme toggle
+- `Footer` - Links, social icons, company info
+- `ProductCard` - Animated product tile with add-to-cart
+- `GamifiedSpinner` - Promotional spin wheel with rewards
+- `SearchBar` - Prominent search functionality
+- `ThemeToggle` - Light/dark mode switcher
+- `CartContext` - Global cart state with localStorage persistence
+
+## 🔧 Customization
+
+### Design Tokens
+Edit `src/index.css` to change:
+- Primary/brand colors
+- Spacing and radius
+- Typography
+
+### Tailwind Config
+Modify `tailwind.config.ts` for:
+- Breakpoints
+- Custom utilities
+- Animation timings
+
+## 🚀 Technologies
 
 - Vite
 - TypeScript
 - React
 - shadcn-ui
 - Tailwind CSS
+- Framer Motion
 
 ## How can I deploy this project?
 

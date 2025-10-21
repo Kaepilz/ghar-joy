@@ -22,7 +22,14 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          hover: "hsl(var(--primary-hover))",
         },
+        brand: {
+          DEFAULT: "hsl(var(--primary))",
+          deep: "hsl(var(--brand-deep))",
+        },
+        success: "hsl(var(--success))",
+        warning: "hsl(var(--warning))",
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
