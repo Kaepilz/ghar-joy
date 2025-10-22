@@ -25,10 +25,12 @@ const Index = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <h1 className="text-4xl md:text-6xl font-bold mb-4">
-                Sell & Buy <span className="text-primary">in Nepal</span>
+              <h1 className="text-3xl md:text-5xl font-bold mb-4">
+                Everyone is<span className="text-primary"> Buyer & Seller</span>
               </h1>
               <p className="text-lg text-muted-foreground mb-8">
+                <span className="text-primary text-2xl">Buy</span> what you want & <span className="text-primary text-2xl">Sell</span> what you don't.
+                <br/>
                 Your trusted marketplace for everything you need. Safe, fast, and reliable.
               </p>
               <div className="max-w-lg mb-6">
