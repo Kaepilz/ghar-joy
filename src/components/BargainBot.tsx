@@ -1,7 +1,7 @@
-// Auto Bargain Bot - Negotiates between buyer and seller
-import { useState } from "react";
+// Auto Bargain Bot - Witty and fair negotiator with personality
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, Bot, User, DollarSign } from "lucide-react";
+import { Send, Bot, User, DollarSign, Sparkles, ThumbsUp } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,10 +13,17 @@ export const BargainBot = () => {
   const [messages, setMessages] = useState<BargainMessage[]>([
     {
       role: "bot",
-      message: `Welcome! The seller's asking price is Rs. ${originalPrice}. Make your offer and I'll help negotiate the best deal for both parties.`
+      message: `Hey there! 👋 The seller wants Rs. ${originalPrice} for this gem. What's your best offer? Let's find a sweet deal together!`
     }
   ]);
   const [offerAmount, setOfferAmount] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Auto scroll to bottom
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, isTyping]);
 
   const handleSendOffer = () => {
     const offer = parseInt(offerAmount);
@@ -29,28 +36,42 @@ export const BargainBot = () => {
       price: offer
     };
     setMessages((prev) => [...prev, buyerMessage]);
+    setOfferAmount("");
+    setIsTyping(true);
 
-    // Get bot response
+    // Show typing indicator then bot response
     setTimeout(() => {
       const botResponse = getBargainResponse(originalPrice, offer, messages);
+      setIsTyping(false);
       setMessages((prev) => [...prev, botResponse]);
-    }, 1000);
-
-    setOfferAmount("");
+    }, 1500);
   };
 
   return (
     <div className="max-w-3xl mx-auto">
-      {/* Header */}
-      <Card className="p-6 mb-6 bg-gradient-to-br from-primary/5 to-blue-500/5">
+      {/* Header with Personality */}
+      <Card className="p-6 mb-6 bg-gradient-to-br from-primary/5 to-blue-500/5 border-2 border-primary/20">
         <div className="flex items-start gap-4">
-          <div className="p-3 bg-primary/10 rounded-full">
-            <Bot className="h-6 w-6 text-primary" />
-          </div>
-          <div>
-            <h2 className="text-2xl font-bold mb-2">Auto Bargain Bot</h2>
+          <motion.div 
+            className="p-3 bg-gradient-to-br from-primary to-blue-500 rounded-full"
+            animate={{ 
+              rotate: [0, 10, 0, -10, 0],
+              scale: [1, 1.1, 1]
+            }}
+            transition={{ 
+              duration: 3,
+              repeat: Infinity
+            }}
+          >
+            <Bot className="h-6 w-6 text-white" />
+          </motion.div>
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-2">
+              <h2 className="text-2xl font-bold">Auto Bargain Bot</h2>
+              <Sparkles className="h-5 w-5 text-primary" />
+            </div>
             <p className="text-muted-foreground">
-              I'll help negotiate the best price between you and the seller. Just make an offer!
+              Hi! I'm your friendly negotiator 🤝 I'll make sure both you and the seller walk away happy. Let's make a deal!
             </p>
           </div>
         </div>
@@ -67,10 +88,10 @@ export const BargainBot = () => {
         </div>
       </Card>
 
-      {/* Chat Messages */}
-      <Card className="p-6 mb-6 min-h-[400px] max-h-[500px] overflow-y-auto">
+      {/* Chat Messages with Better UI */}
+      <Card className="p-6 mb-6 min-h-[400px] max-h-[500px] overflow-y-auto bg-gradient-to-b from-muted/20 to-transparent">
         <div className="space-y-4">
-          <AnimatePresence>
+          <AnimatePresence mode="popLayout">
             {messages.map((msg, index) => (
               <motion.div
                 key={index}
@@ -97,7 +118,7 @@ export const BargainBot = () => {
                   )}
                 </div>
 
-                {/* Message Bubble */}
+                {/* Message Bubble with Better Styling */}
                 <div
                   className={`flex-1 max-w-[80%] ${
                     msg.role === "buyer" ? "text-right" : ""
@@ -105,30 +126,79 @@ export const BargainBot = () => {
                 >
                   <Badge
                     variant="secondary"
-                    className="mb-1"
+                    className="mb-2 gap-1"
                   >
-                    {msg.role === "bot" ? "Bargain Bot" : "You"}
+                    {msg.role === "bot" ? (
+                      <>
+                        <Bot className="h-3 w-3" />
+                        Bargain Bot
+                      </>
+                    ) : (
+                      <>
+                        <User className="h-3 w-3" />
+                        You
+                      </>
+                    )}
                   </Badge>
-                  <div
-                    className={`p-4 rounded-lg ${
+                  <motion.div
+                    initial={{ scale: 0.9 }}
+                    animate={{ scale: 1 }}
+                    className={`p-4 rounded-2xl shadow-sm ${
                       msg.role === "bot"
-                        ? "bg-muted"
+                        ? "bg-gradient-to-br from-muted to-muted/50"
                         : msg.role === "buyer"
-                        ? "bg-blue-500/10 border border-blue-500/20"
-                        : "bg-green-500/10 border border-green-500/20"
+                        ? "bg-gradient-to-br from-blue-500/20 to-blue-500/10 border border-blue-500/30"
+                        : "bg-gradient-to-br from-green-500/20 to-green-500/10 border border-green-500/30"
                     }`}
                   >
-                    <p className="text-sm">{msg.message}</p>
+                    <p className="text-sm leading-relaxed">{msg.message}</p>
                     {msg.price && (
-                      <p className="text-lg font-bold text-primary mt-2">
+                      <motion.p 
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        className="text-xl font-bold text-primary mt-2 flex items-center gap-1"
+                      >
+                        <DollarSign className="h-5 w-5" />
                         Rs. {msg.price}
-                      </p>
+                      </motion.p>
                     )}
-                  </div>
+                  </motion.div>
                 </div>
               </motion.div>
             ))}
+
+            {/* Typing Indicator */}
+            {isTyping && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                className="flex gap-3"
+              >
+                <div className="w-10 h-10 rounded-full flex items-center justify-center bg-primary/10">
+                  <Bot className="h-5 w-5 text-primary" />
+                </div>
+                <div className="flex gap-1 items-center p-4 bg-muted rounded-2xl">
+                  {[0, 1, 2].map((i) => (
+                    <motion.div
+                      key={i}
+                      animate={{ 
+                        scale: [1, 1.5, 1],
+                        opacity: [0.3, 1, 0.3]
+                      }}
+                      transition={{ 
+                        duration: 1,
+                        repeat: Infinity,
+                        delay: i * 0.2
+                      }}
+                      className="w-2 h-2 bg-primary rounded-full"
+                    />
+                  ))}
+                </div>
+              </motion.div>
+            )}
           </AnimatePresence>
+          <div ref={messagesEndRef} />
         </div>
       </Card>
 

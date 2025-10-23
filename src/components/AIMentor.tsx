@@ -1,6 +1,7 @@
-// AI Mentor Component - Provides feedback on product listings
+// AI Mentor Component - Provides feedback on product listings with personality
 import { motion } from "framer-motion";
-import { Sparkles, AlertCircle, Lightbulb, Clock, TrendingUp } from "lucide-react";
+import { Sparkles, AlertCircle, Lightbulb, Clock, TrendingUp, Heart, Smile } from "lucide-react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -13,20 +14,60 @@ interface AIMentorProps {
 
 export const AIMentor = ({ product }: AIMentorProps) => {
   const feedback = analyzeProductPerformance(product);
+  const [isTyping, setIsTyping] = useState(false);
+  const [showEncouragement, setShowEncouragement] = useState(false);
+
+  // Show encouraging message after analysis
+  useEffect(() => {
+    const timer = setTimeout(() => setShowEncouragement(true), 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="space-y-6">
-      {/* AI Mentor Header */}
-      <Card className="p-6 bg-gradient-to-br from-primary/5 to-purple-500/5">
+      {/* AI Mentor Header with Personality */}
+      <Card className="p-6 bg-gradient-to-br from-primary/5 to-purple-500/5 border-2 border-primary/20">
         <div className="flex items-start gap-4">
-          <div className="p-3 bg-primary/10 rounded-full">
-            <Sparkles className="h-6 w-6 text-primary" />
-          </div>
-          <div>
-            <h2 className="text-2xl font-bold mb-2">AI Seller Mentor</h2>
-            <p className="text-muted-foreground">
-              Get intelligent insights and recommendations to boost your sales
+          <motion.div 
+            className="p-3 bg-gradient-to-br from-primary to-orange-500 rounded-full"
+            animate={{ 
+              rotate: [0, 5, 0, -5, 0],
+              scale: [1, 1.05, 1]
+            }}
+            transition={{ 
+              duration: 3,
+              repeat: Infinity,
+              repeatDelay: 2
+            }}
+          >
+            <Sparkles className="h-6 w-6 text-white" />
+          </motion.div>
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-2">
+              <h2 className="text-2xl font-bold">AI Seller Mentor</h2>
+              <Smile className="h-5 w-5 text-primary" />
+            </div>
+            <p className="text-muted-foreground mb-2">
+              Hey there! 👋 I'm here to help you succeed. Let's make your listing shine!
             </p>
+            {/* Typing Indicator */}
+            <div className="flex gap-1 mt-2">
+              {[0, 1, 2].map((i) => (
+                <motion.div
+                  key={i}
+                  animate={{ 
+                    scale: [1, 1.3, 1],
+                    opacity: [0.3, 1, 0.3]
+                  }}
+                  transition={{ 
+                    duration: 1,
+                    repeat: Infinity,
+                    delay: i * 0.15
+                  }}
+                  className="w-2 h-2 bg-primary rounded-full"
+                />
+              ))}
+            </div>
           </div>
         </div>
       </Card>
@@ -97,19 +138,24 @@ export const AIMentor = ({ product }: AIMentorProps) => {
         </motion.div>
       )}
 
-      {/* AI Suggestions */}
+      {/* AI Suggestions with Personality */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
       >
-        <Card className="p-6 border-green-500/20">
+        <Card className="p-6 border-green-500/20 bg-gradient-to-br from-green-500/5 to-transparent">
           <div className="flex items-start gap-3 mb-4">
-            <Lightbulb className="h-5 w-5 text-green-500 mt-0.5" />
+            <motion.div
+              animate={{ rotate: [0, 15, 0] }}
+              transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+            >
+              <Lightbulb className="h-5 w-5 text-green-500 mt-0.5" />
+            </motion.div>
             <div>
-              <h3 className="font-semibold mb-1">AI Recommendations</h3>
+              <h3 className="font-semibold mb-1">💡 My Suggestions for You</h3>
               <p className="text-sm text-muted-foreground">
-                Smart suggestions to improve your listing performance
+                I've analyzed your listing — here's how to make it irresistible!
               </p>
             </div>
           </div>
@@ -120,13 +166,30 @@ export const AIMentor = ({ product }: AIMentorProps) => {
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1 * index }}
-                className="flex items-start gap-2 text-sm p-3 bg-green-500/5 rounded-md"
+                whileHover={{ scale: 1.02, x: 5 }}
+                className="flex items-start gap-3 text-sm p-4 bg-green-500/10 rounded-lg border border-green-500/20 hover:border-green-500/40 transition-all cursor-pointer"
               >
                 <TrendingUp className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
-                <span>{suggestion}</span>
+                <span className="leading-relaxed">{suggestion}</span>
               </motion.li>
             ))}
           </ul>
+          
+          {/* Encouragement Message */}
+          {showEncouragement && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-4 p-4 bg-gradient-to-r from-primary/10 to-orange-500/10 rounded-lg border border-primary/20"
+            >
+              <div className="flex items-center gap-2">
+                <Heart className="h-5 w-5 text-primary" />
+                <p className="text-sm font-medium">
+                  You're doing great! Keep improving and your sales will soar! 🚀
+                </p>
+              </div>
+            </motion.div>
+          )}
         </Card>
       </motion.div>
 
