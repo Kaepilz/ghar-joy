@@ -12,23 +12,29 @@ export const Header = () => {
 
   const NavLinks = () => (
     <>
+      <Link to="/products">
+        <Button variant="ghost">Products</Button>
+      </Link>
+      <Link to="/barter">
+        <Button variant="ghost">Barter</Button>
+      </Link>
       <Link to="/sell">
         <Button variant="ghost" className="gap-2">
           <Store className="h-4 w-4" />
           Sell
         </Button>
       </Link>
-      <Link to="/service-hub">
-        <Button variant="ghost">Service Hub</Button>
+      <Link to="/seller-dashboard">
+        <Button variant="ghost">Dashboard</Button>
       </Link>
-      <Link to="/about">
-        <Button variant="ghost">About</Button>
-      </Link>
-      <Link to="/login">
+      <Link to="/profile">
         <Button variant="ghost" className="gap-2">
           <User className="h-4 w-4" />
-          Login
+          Profile
         </Button>
+      </Link>
+      <Link to="/login">
+        <Button variant="ghost">Login</Button>
       </Link>
     </>
   );

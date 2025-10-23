@@ -1,3 +1,12 @@
+open 2 cmd 
+one for https://github.com/Kaepilz/eBay.git
+another https://github.com/Kaepilz/ghar-joy.git 
+
+pull code from this https://github.com/Kaepilz/ghar-joy.git  and push to this https://github.com/Kaepilz/eBay.git
+
+when you make any changes push to both repos 
+
+
 # ShoppingGhar - Nepal's E-Commerce Marketplace
 
 A modern, vibrant e-commerce platform for buying and selling in Nepal. Built with React, TypeScript, Tailwind CSS, and Framer Motion.

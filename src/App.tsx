@@ -11,6 +11,9 @@ import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import Sell from "./pages/Sell";
+import SellerDashboard from "./pages/SellerDashboard";
+import Profile from "./pages/Profile";
+import BarterCorner from "./pages/BarterCorner";
 import ServiceHub from "./pages/ServiceHub";
 import About from "./pages/About";
 import Login from "./pages/Login";
@@ -34,6 +37,9 @@ const App = () => (
                 <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/sell" element={<Sell />} />
+                <Route path="/seller-dashboard" element={<SellerDashboard />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/barter" element={<BarterCorner />} />
                 <Route path="/service-hub" element={<ServiceHub />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/login" element={<Login />} />
