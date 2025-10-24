@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, TrendingUp, Shield, Zap, Package, Sparkles } from "lucide-react";
 import { useState, useEffect } from "react";
 import { SearchBar } from "@/components/SearchBar";
-import { GamifiedSpinner } from "@/components/GamifiedSpinner";
+import { CircleSpinner } from "@/components/CircleSpinner";
 import { ProductCard } from "@/components/ProductCard";
 import { products, categories } from "@/lib/mockData";
 import { getCurrentUser, getTimeBasedGreeting } from "@/lib/userMock";
@@ -71,7 +71,7 @@ const Index = () => {
       </section>
 
       {/* Gamified Spinner */}
-      <section className="py-12"><div className="container mx-auto px-4"><div className="max-w-md mx-auto"><GamifiedSpinner /></div></div></section>
+      <section className="py-12"><div className="container mx-auto px-4"><div className="max-w-md mx-auto"><CircleSpinner /></div></div></section>
 
       {/* Categories Section */}
       <section className="py-12 bg-muted/30">
