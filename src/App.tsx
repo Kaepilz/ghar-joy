@@ -24,6 +24,7 @@ import Buzz from "./pages/Buzz";
 import SpinWheel from "./pages/SpinWheel";
 import Gifts from "./pages/Gifts";
 import FeedbackHelp from "./pages/FeedbackHelp";
+import Wishlist from "./pages/Wishlist";
 
 const queryClient = new QueryClient();
 
@@ -54,6 +55,7 @@ const App = () => (
                   <Route path="/buzz" element={<Buzz />} />
                   <Route path="/spin" element={<SpinWheel />} />
                   <Route path="/gifts" element={<Gifts />} />
+                  <Route path="/wishlist" element={<Wishlist />} />
                   <Route path="/help" element={<FeedbackHelp />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />

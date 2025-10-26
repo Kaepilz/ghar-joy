@@ -32,6 +32,13 @@ export interface Product {
   rating: number;
 }
 
+export interface WishlistItem {
+  id: string;
+  productId: string;
+  userId: string;
+  addedAt: string;
+}
+
 export interface Post {
   id: string;
   userId: string;
@@ -117,6 +124,13 @@ interface AppStore {
   addBargainMessage: (message: ChatMessage) => void;
   clearMentorChat: () => void;
   clearBargainChat: () => void;
+  
+  // Wishlist
+  wishlist: WishlistItem[];
+  addToWishlist: (userId: string, productId: string) => void;
+  removeFromWishlist: (userId: string, productId: string) => void;
+  isInWishlist: (userId: string, productId: string) => boolean;
+  getWishlistByUser: (userId: string) => WishlistItem[];
 }
 
 // ===== Store Implementation =====
@@ -328,6 +342,44 @@ export const useAppStore = create<AppStore>()(
       clearMentorChat: () => set({ mentorChat: [] }),
       
       clearBargainChat: () => set({ bargainChat: [] }),
+      
+      // === Wishlist ===
+      wishlist: [],
+      
+      addToWishlist: (userId, productId) => set((state) => {
+        // Check if already in wishlist
+        const exists = state.wishlist.some(
+          item => item.userId === userId && item.productId === productId
+        );
+        if (exists) return state;
+        
+        const newItem: WishlistItem = {
+          id: `wishlist_${Date.now()}`,
+          userId,
+          productId,
+          addedAt: new Date().toISOString()
+        };
+        
+        return {
+          wishlist: [...state.wishlist, newItem]
+        };
+      }),
+      
+      removeFromWishlist: (userId, productId) => set((state) => ({
+        wishlist: state.wishlist.filter(
+          item => !(item.userId === userId && item.productId === productId)
+        )
+      })),
+      
+      isInWishlist: (userId, productId) => {
+        return get().wishlist.some(
+          item => item.userId === userId && item.productId === productId
+        );
+      },
+      
+      getWishlistByUser: (userId) => {
+        return get().wishlist.filter(item => item.userId === userId);
+      },
     }),
     {
       name: 'shoppingghar-storage', // localStorage key

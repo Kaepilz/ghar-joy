@@ -94,12 +94,16 @@ export const CircleSpinner = ({
   };
 
   return (
-    <Card className="p-8 bg-gradient-to-br from-card to-secondary text-center relative overflow-hidden">
+    <Card className="p-6 md:p-8 bg-gradient-to-br from-primary/5 via-card to-secondary/50 text-center relative overflow-hidden border-2 border-primary/20 shadow-2xl max-w-2xl mx-auto">
+      {/* Enhanced Background with animated gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-50" />
+      
       {/* Background decorative sparkles */}
-      <div className="absolute inset-0 opacity-10">
-        <Sparkles className="absolute top-4 left-4 h-8 w-8 text-primary animate-pulse" />
-        <Sparkles className="absolute bottom-4 right-4 h-8 w-8 text-primary animate-pulse" style={{ animationDelay: '0.5s' }} />
-        <Sparkles className="absolute top-1/2 left-1/4 h-6 w-6 text-primary animate-pulse" style={{ animationDelay: '1s' }} />
+      <div className="absolute inset-0 opacity-20">
+        <Sparkles className="absolute top-4 left-4 h-6 w-6 md:h-8 md:w-8 text-primary animate-pulse" />
+        <Sparkles className="absolute bottom-4 right-4 h-6 w-6 md:h-8 md:w-8 text-accent animate-pulse" style={{ animationDelay: '0.5s' }} />
+        <Sparkles className="absolute top-1/2 left-1/4 h-4 w-4 md:h-6 md:w-6 text-primary animate-pulse" style={{ animationDelay: '1s' }} />
+        <Sparkles className="absolute top-1/4 right-1/4 h-4 w-4 md:h-6 md:w-6 text-accent animate-pulse" style={{ animationDelay: '1.5s' }} />
       </div>
       
       {/* Confetti effect when winning */}
@@ -139,66 +143,89 @@ export const CircleSpinner = ({
       <div className="relative z-10">
         {/* Header */}
         <div className="flex items-center justify-center gap-2 mb-2">
-          <PartyPopper className="h-6 w-6 text-primary" />
-          <h3 className="text-2xl font-bold">Spin & Win!</h3>
-          <PartyPopper className="h-6 w-6 text-primary" />
+          <PartyPopper className="h-5 w-5 md:h-6 md:w-6 text-primary animate-bounce" />
+          <h3 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            Spin & Win!
+          </h3>
+          <PartyPopper className="h-5 w-5 md:h-6 md:w-6 text-accent animate-bounce" style={{ animationDelay: '0.2s' }} />
         </div>
-        <p className="text-muted-foreground mb-6">Try your luck and get amazing rewards</p>
+        <p className="text-muted-foreground text-sm md:text-base mb-4 md:mb-6">
+          Try your luck and get amazing rewards
+        </p>
 
         {/* Circular Spinner Wheel */}
-        <div className="mb-6 relative">
+        <div className="mb-4 md:mb-6 relative flex justify-center">
           {/* Wheel container */}
           <motion.div
             animate={{ rotate: rotation }}
             transition={{ 
               duration: 3, 
-              ease: "easeOut",
+              ease: [0.32, 0.72, 0, 1], // Custom easing for smoother animation
             }}
             className="inline-block relative"
           >
-            {/* Main circle with segments */}
-            <div className="w-64 h-64 rounded-full border-8 border-primary relative overflow-hidden shadow-2xl">
+            {/* Main circle with segments - Responsive sizing */}
+            <div className="w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-full border-[6px] md:border-8 border-primary relative overflow-hidden shadow-[0_0_40px_rgba(255,106,0,0.3)] bg-gradient-to-br from-background to-card">
               {rewards.map((r, index) => {
                 const angle = (360 / rewards.length) * index;
                 const nextAngle = (360 / rewards.length) * (index + 1);
+                const colors = [
+                  'from-primary/90 to-primary/60',
+                  'from-accent/90 to-accent/60',
+                  'from-brand-deep/90 to-brand-deep/60',
+                  'from-warning/90 to-warning/60',
+                  'from-success/90 to-success/60',
+                  'from-primary/80 to-accent/60',
+                ];
                 
                 return (
                   <div
                     key={index}
-                    className="absolute inset-0 flex items-center justify-center"
+                    className="absolute inset-0"
                     style={{
                       background: `conic-gradient(from ${angle}deg, 
-                        hsl(var(--primary) / 0.8) ${angle}deg, 
-                        hsl(var(--primary) / 0.4) ${nextAngle}deg, 
+                        hsl(var(--primary) / 0.85) ${angle}deg, 
+                        hsl(var(--accent) / 0.85) ${angle + 30}deg,
+                        hsl(var(--primary) / 0.5) ${nextAngle}deg, 
                         transparent ${nextAngle}deg)`,
                     }}
                   >
                     <div
-                      className="absolute text-xs font-bold"
+                      className="absolute text-[10px] sm:text-xs md:text-sm font-bold text-white drop-shadow-lg"
                       style={{
-                        transform: `rotate(${angle + (360 / rewards.length) / 2}deg) translateY(-80px)`,
+                        transform: `rotate(${angle + (360 / rewards.length) / 2}deg) translateY(-70px) sm:translateY(-80px) md:translateY(-90px) lg:translateY(-100px)`,
+                        left: '50%',
+                        top: '50%',
                       }}
                     >
-                      <span className="block" style={{ transform: 'rotate(-90deg)' }}>
-                        {r.text.slice(0, 4)}
+                      <span className="block whitespace-nowrap" style={{ transform: 'rotate(-90deg) translateX(-50%)' }}>
+                        {r.text}
                       </span>
                     </div>
                   </div>
                 );
               })}
               
-              {/* Center gift icon */}
+              {/* Center gift icon with glow effect */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-20 h-20 rounded-full bg-background flex items-center justify-center shadow-lg">
-                  <Gift className="h-10 w-10 text-primary" />
+                <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-background to-card flex items-center justify-center shadow-[0_0_30px_rgba(255,106,0,0.5)] border-4 border-primary/30">
+                  <motion.div
+                    animate={isSpinning ? { scale: [1, 1.2, 1] } : {}}
+                    transition={{ repeat: Infinity, duration: 0.8 }}
+                  >
+                    <Gift className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 text-primary drop-shadow-lg" />
+                  </motion.div>
                 </div>
               </div>
             </div>
           </motion.div>
           
-          {/* Pointer/Arrow at top */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2">
-            <div className="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-primary" />
+          {/* Enhanced Pointer/Arrow at top with glow */}
+          <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
+            <div className="relative">
+              <div className="w-0 h-0 border-l-[12px] md:border-l-[16px] border-r-[12px] md:border-r-[16px] border-t-[16px] md:border-t-[20px] border-l-transparent border-r-transparent border-t-primary drop-shadow-[0_0_8px_rgba(255,106,0,0.8)]" />
+              <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-3 h-3 md:w-4 md:h-4 bg-primary rounded-full shadow-[0_0_10px_rgba(255,106,0,0.9)]" />
+            </div>
           </div>
         </div>
 
@@ -225,14 +252,14 @@ export const CircleSpinner = ({
         </AnimatePresence>
 
         {/* Action buttons */}
-        <div className="flex gap-3 justify-center">
+        <div className="flex flex-col sm:flex-row gap-3 justify-center px-4">
           {!reward ? (
             <Button
               variant="hero"
               size="lg"
               onClick={handleSpin}
               disabled={isSpinning || disabled}
-              className="min-w-[200px]"
+              className="min-w-[180px] sm:min-w-[200px] text-base md:text-lg py-5 md:py-6 shadow-lg hover:shadow-xl transition-all"
             >
               {isSpinning ? (
                 <>
@@ -252,7 +279,7 @@ export const CircleSpinner = ({
                 variant="hero"
                 size="lg"
                 onClick={handleClaim}
-                className="min-w-[150px]"
+                className="min-w-[140px] sm:min-w-[150px] shadow-lg"
               >
                 <PartyPopper className="h-5 w-5 mr-2" />
                 Claim Now
@@ -261,16 +288,17 @@ export const CircleSpinner = ({
                 variant="outline"
                 size="lg"
                 onClick={handleReset}
+                className="min-w-[140px] sm:min-w-[150px]"
               >
-                Spin Again Tomorrow
+                Close
               </Button>
             </>
           )}
         </div>
 
         {/* Daily spin info */}
-        <p className="text-xs text-muted-foreground mt-4">
-          🎯 You can spin once per day. Come back tomorrow for more rewards!
+        <p className="text-xs md:text-sm text-muted-foreground mt-4 px-4">
+          🎯 Spin daily for amazing rewards! Come back tomorrow for more.
         </p>
       </div>
     </Card>

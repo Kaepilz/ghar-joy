@@ -1,11 +1,13 @@
 import { motion } from "framer-motion";
-import { ShoppingCart, Star } from "lucide-react";
+import { ShoppingCart, Star, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import type { Product } from "@/lib/mockData";
 import { toast } from "sonner";
+import { useAppStore } from "@/store/useAppStore";
+import { useState } from "react";
 
 interface ProductCardProps {
   product: Product;
@@ -13,10 +15,39 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
+  const currentUser = useAppStore(state => state.currentUser);
+  const addToWishlist = useAppStore(state => state.addToWishlist);
+  const removeFromWishlist = useAppStore(state => state.removeFromWishlist);
+  const isInWishlist = useAppStore(state => state.isInWishlist);
+  
+  const [isWishlisted, setIsWishlisted] = useState(
+    currentUser ? isInWishlist(currentUser.id, product.id) : false
+  );
+  
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     onAddToCart?.(product);
     toast.success(`${product.title} added to cart!`);
+  };
+
+  const handleWishlistToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (!currentUser) {
+      toast.error("Please login to add items to wishlist");
+      return;
+    }
+    
+    if (isWishlisted) {
+      removeFromWishlist(currentUser.id, product.id);
+      setIsWishlisted(false);
+      toast.success("Removed from wishlist");
+    } else {
+      addToWishlist(currentUser.id, product.id);
+      setIsWishlisted(true);
+      toast.success("Added to wishlist! ❤️");
+    }
   };
 
   return (
@@ -26,14 +57,30 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
     >
       <Link to={`/product/${product.id}`}>
         <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow">
-          <div className="aspect-square relative overflow-hidden bg-muted">
+          <div className="aspect-square relative overflow-hidden bg-muted group">
             <img
               src={product.images[0]}
               alt={product.title}
               className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
             />
+            
+            {/* Wishlist Heart Button */}
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              onClick={handleWishlistToggle}
+              className="absolute top-2 right-2 z-10 p-2 bg-background/80 backdrop-blur-sm rounded-full shadow-md hover:bg-background transition-colors"
+            >
+              <Heart 
+                className={`h-5 w-5 transition-all ${
+                  isWishlisted 
+                    ? 'fill-red-500 text-red-500 scale-110' 
+                    : 'text-muted-foreground hover:text-red-500'
+                }`}
+              />
+            </motion.button>
+            
             {product.condition === 'used' && (
-              <Badge className="absolute top-2 right-2" variant="secondary">
+              <Badge className="absolute top-2 left-2" variant="secondary">
                 Used
               </Badge>
             )}
