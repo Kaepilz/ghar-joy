@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ShoppingCart, Menu, User, Store } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { LanguageToggle } from "@/components/LanguageToggle";
 import { SearchBar } from "@/components/SearchBar";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -57,6 +58,7 @@ export const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-2">
             <NavLinks />
+            <LanguageToggle />
             <ThemeToggle />
             <Link to="/cart">
               <Button variant="ghost" size="icon" className="relative">
@@ -75,6 +77,7 @@ export const Header = () => {
 
           {/* Mobile Menu */}
           <div className="flex md:hidden items-center gap-2">
+            <LanguageToggle />
             <ThemeToggle />
             <Link to="/cart">
               <Button variant="ghost" size="icon" className="relative">

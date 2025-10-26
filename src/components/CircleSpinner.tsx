@@ -1,6 +1,7 @@
 // ============================================
 // Circle Spinner Wheel Component
 // Beautiful circular spinning wheel with claim system
+// Can work standalone or as controlled component
 // ============================================
 
 import { useState } from "react";
@@ -21,7 +22,18 @@ const rewards = [
   { text: "🎁 Mystery Box", color: "text-orange-500", isFreeGift: true },
 ];
 
-export const CircleSpinner = () => {
+// Props interface - all optional for backward compatibility
+interface CircleSpinnerProps {
+  onSpinComplete?: (prize: string) => void; // Callback when spin finishes
+  disabled?: boolean; // Disable spinning
+  autoNavigate?: boolean; // Auto-navigate to gifts page (default: true)
+}
+
+export const CircleSpinner = ({ 
+  onSpinComplete, 
+  disabled = false,
+  autoNavigate = true 
+}: CircleSpinnerProps = {}) => {
   const [isSpinning, setIsSpinning] = useState(false);
   const [reward, setReward] = useState<typeof rewards[0] | null>(null);
   const [rotation, setRotation] = useState(0);
@@ -30,7 +42,7 @@ export const CircleSpinner = () => {
 
   // Handle spin action
   const handleSpin = () => {
-    if (isSpinning || reward) return;
+    if (isSpinning || reward || disabled) return;
     
     setIsSpinning(true);
     setShowConfetti(false);
@@ -49,16 +61,23 @@ export const CircleSpinner = () => {
       setIsSpinning(false);
       setShowConfetti(true);
       
-      // Show toast notification
-      toast.success(`You won ${randomReward.text}!`, {
-        description: "Click 'Claim Now' to redeem your reward"
-      });
+      // Call callback if provided
+      if (onSpinComplete) {
+        onSpinComplete(randomReward.text);
+      }
+      
+      // Show toast notification only if not using callback
+      if (!onSpinComplete) {
+        toast.success(`You won ${randomReward.text}!`, {
+          description: "Click 'Claim Now' to redeem your reward"
+        });
+      }
     }, 3000);
   };
 
   // Handle claim action
   const handleClaim = () => {
-    if (reward?.isFreeGift) {
+    if (autoNavigate && reward?.isFreeGift) {
       navigate('/gifts');
     } else {
       toast.success('Reward claimed! Check your rewards tab.', {
@@ -212,7 +231,7 @@ export const CircleSpinner = () => {
               variant="hero"
               size="lg"
               onClick={handleSpin}
-              disabled={isSpinning}
+              disabled={isSpinning || disabled}
               className="min-w-[200px]"
             >
               {isSpinning ? (
