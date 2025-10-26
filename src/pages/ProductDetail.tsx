@@ -8,7 +8,8 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ProductCard } from "@/components/ProductCard";
 import { toast } from "sonner";
-import { ShoppingCart, Star, Store, Minus, Plus, ArrowLeft } from "lucide-react";
+import { ShoppingCart, Star, Store, Minus, Plus, ArrowLeft, Heart } from "lucide-react";
+import { useAppStore } from "@/store/useAppStore";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -16,7 +17,16 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
 
+  const currentUser = useAppStore(state => state.currentUser);
+  const addToWishlist = useAppStore(state => state.addToWishlist);
+  const removeFromWishlist = useAppStore(state => state.removeFromWishlist);
+  const isInWishlist = useAppStore(state => state.isInWishlist);
+  
   const product = products.find(p => p.id === id);
+  
+  const [isWishlisted, setIsWishlisted] = useState(
+    currentUser && product ? isInWishlist(currentUser.id, product.id) : false
+  );
 
   if (!product) {
     return (
@@ -45,6 +55,23 @@ const ProductDetail = () => {
         <span>{quantity}x {product.title} added to cart!</span>
       </motion.div>
     );
+  };
+
+  const handleWishlistToggle = () => {
+    if (!currentUser) {
+      toast.error("Please login to add items to wishlist");
+      return;
+    }
+    
+    if (isWishlisted) {
+      removeFromWishlist(currentUser.id, product.id);
+      setIsWishlisted(false);
+      toast.success("Removed from wishlist");
+    } else {
+      addToWishlist(currentUser.id, product.id);
+      setIsWishlisted(true);
+      toast.success("Added to wishlist! ❤️");
+    }
   };
 
   return (
@@ -157,7 +184,7 @@ const ProductDetail = () => {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-4">
               <Button
                 variant="hero"
                 size="lg"
@@ -168,8 +195,16 @@ const ProductDetail = () => {
                 <ShoppingCart className="mr-2 h-5 w-5" />
                 Add to Cart
               </Button>
-              <Button variant="outline" size="lg" className="flex-1">
-                Buy Now
+              <Button 
+                variant="outline" 
+                size="lg" 
+                onClick={handleWishlistToggle}
+                className={isWishlisted ? 'border-red-500 text-red-500' : ''}
+              >
+                <Heart 
+                  className={`mr-2 h-5 w-5 ${isWishlisted ? 'fill-red-500' : ''}`}
+                />
+                {isWishlisted ? 'Saved' : 'Save'}
               </Button>
             </div>
           </div>
