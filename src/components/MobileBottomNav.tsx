@@ -15,8 +15,8 @@ export const MobileBottomNav = () => {
 
   const navItems = [
     { icon: Home, label: "Home", path: "/" },
-    { icon: Gift, label: "Spin", path: "/" },
-    { icon: TrendingUp, label: "Buzz", path: "/" },
+    { icon: Gift, label: "Spin", path: "/spin" },
+    { icon: TrendingUp, label: "Buzz", path: "/buzz" },
     { icon: User, label: "Profile", path: "/profile" },
     { icon: ShoppingCart, label: "Cart", path: "/cart", badge: itemCount },
   ];
