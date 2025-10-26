@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ShoppingCart, Menu, User, Store } from "lucide-react";
+import { ShoppingCart, Menu, User, Store, Gift, TrendingUp, CircleDot, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageToggle } from "@/components/LanguageToggle";
@@ -16,6 +16,24 @@ export const Header = () => {
       <Link to="/products">
         <Button variant="ghost">Products</Button>
       </Link>
+      <Link to="/buzz">
+        <Button variant="ghost" className="gap-2">
+          <TrendingUp className="h-4 w-4" />
+          Buzz
+        </Button>
+      </Link>
+      <Link to="/spin">
+        <Button variant="ghost" className="gap-2">
+          <CircleDot className="h-4 w-4" />
+          Spin
+        </Button>
+      </Link>
+      <Link to="/gifts">
+        <Button variant="ghost" className="gap-2">
+          <Gift className="h-4 w-4" />
+          Gifts
+        </Button>
+      </Link>
       <Link to="/barter">
         <Button variant="ghost">Barter</Button>
       </Link>
@@ -27,6 +45,12 @@ export const Header = () => {
       </Link>
       <Link to="/seller-dashboard">
         <Button variant="ghost">Dashboard</Button>
+      </Link>
+      <Link to="/help">
+        <Button variant="ghost" className="gap-2">
+          <HelpCircle className="h-4 w-4" />
+          Help
+        </Button>
       </Link>
       <Link to="/profile">
         <Button variant="ghost" className="gap-2">
