@@ -1,10 +1,17 @@
 import { Link } from "react-router-dom";
-import { ShoppingCart, Menu, User, Store } from "lucide-react";
+import { ShoppingCart, Menu, User, Store, Gift, TrendingUp, HelpCircle, Heart, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { LanguageToggle } from "@/components/LanguageToggle";
 import { SearchBar } from "@/components/SearchBar";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useCart } from "@/context/CartContext";
 
 export const Header = () => {
@@ -15,27 +22,69 @@ export const Header = () => {
       <Link to="/products">
         <Button variant="ghost">Products</Button>
       </Link>
-      <Link to="/barter">
-        <Button variant="ghost">Barter</Button>
-      </Link>
-      <Link to="/sell">
+      <Link to="/buzz">
         <Button variant="ghost" className="gap-2">
-          <Store className="h-4 w-4" />
-          Sell
+          <TrendingUp className="h-4 w-4" />
+          Buzz
         </Button>
       </Link>
-      <Link to="/seller-dashboard">
-        <Button variant="ghost">Dashboard</Button>
-      </Link>
-      <Link to="/profile">
+      <Link to="/gifts">
         <Button variant="ghost" className="gap-2">
-          <User className="h-4 w-4" />
-          Profile
+          <Gift className="h-4 w-4" />
+          Gifts
         </Button>
       </Link>
-      <Link to="/login">
-        <Button variant="ghost">Login</Button>
+      <Link to="/wishlist">
+        <Button variant="ghost" className="gap-2">
+          <Heart className="h-4 w-4" />
+          Wishlist
+        </Button>
       </Link>
+      
+      {/* More dropdown for additional pages */}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="gap-2">
+            <MoreHorizontal className="h-4 w-4" />
+            More
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-48 bg-popover">
+          <DropdownMenuItem asChild>
+            <Link to="/barter" className="w-full cursor-pointer">
+              Barter Corner
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link to="/sell" className="w-full cursor-pointer flex items-center gap-2">
+              <Store className="h-4 w-4" />
+              Sell Items
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link to="/seller-dashboard" className="w-full cursor-pointer">
+              Seller Dashboard
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link to="/help" className="w-full cursor-pointer flex items-center gap-2">
+              <HelpCircle className="h-4 w-4" />
+              Help & Support
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link to="/profile" className="w-full cursor-pointer flex items-center gap-2">
+              <User className="h-4 w-4" />
+              Profile
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link to="/login" className="w-full cursor-pointer">
+              Login
+            </Link>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </>
   );
 
@@ -57,6 +106,7 @@ export const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-2">
             <NavLinks />
+            <LanguageToggle />
             <ThemeToggle />
             <Link to="/cart">
               <Button variant="ghost" size="icon" className="relative">
@@ -75,6 +125,7 @@ export const Header = () => {
 
           {/* Mobile Menu */}
           <div className="flex md:hidden items-center gap-2">
+            <LanguageToggle />
             <ThemeToggle />
             <Link to="/cart">
               <Button variant="ghost" size="icon" className="relative">
