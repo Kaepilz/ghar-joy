@@ -25,6 +25,8 @@ import SpinWheel from "./pages/SpinWheel";
 import Gifts from "./pages/Gifts";
 import FeedbackHelp from "./pages/FeedbackHelp";
 import Wishlist from "./pages/Wishlist";
+import UploadProduct from "./pages/UploadProduct";
+import UserProfile from "./pages/UserProfile";
 
 const queryClient = new QueryClient();
 
@@ -47,7 +49,8 @@ const App = () => (
                   <Route path="/sell" element={<Sell />} />
                   <Route path="/seller-dashboard" element={<SellerDashboard />} />
                   <Route path="/profile" element={<Profile />} />
-                  <Route path="/profile/:username" element={<Profile />} />
+                  <Route path="/profile/:username" element={<UserProfile />} />
+                  <Route path="/upload-product" element={<UploadProduct />} />
                   <Route path="/barter" element={<BarterCorner />} />
                   <Route path="/service-hub" element={<ServiceHub />} />
                   <Route path="/about" element={<About />} />

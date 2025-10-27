@@ -1,7 +1,7 @@
 // Buyer Profile Page
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { User, Heart, ShoppingBag, Gift, Award, Camera } from "lucide-react";
+import { Heart, ShoppingBag, Gift, Award, Users } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -9,23 +9,38 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { products } from "@/lib/mockData";
 import { ProductCard } from "@/components/ProductCard";
 import { useCart } from "@/context/CartContext";
+import { EditProfileDialog } from "@/components/EditProfileDialog";
+import { useAppStore } from "@/store/useAppStore";
+import { useNavigate } from "react-router-dom";
+import { useLanguage } from "@/context/LanguageContext";
 
 const Profile = () => {
   const { addItem } = useCart();
+  const { t } = useLanguage();
+  const navigate = useNavigate();
+  const { currentUser, getUserById } = useAppStore();
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  
   const [spinRewards] = useState([
     { code: "SPIN123", discount: "10% OFF", used: false },
     { code: "SPIN456", discount: "Free Shipping", used: true },
     { code: "SPIN789", discount: "15% OFF", used: false }
   ]);
 
-  // Mock user data
-  const user = {
+  // Use current user or mock data
+  const user = currentUser || {
+    id: "user_1",
+    username: "rajesh_kumar",
     name: "Rajesh Kumar",
     email: "rajesh@example.com",
-    phone: "+977 9841234567",
     avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rajesh",
+    bio: "Passionate shopper and seller",
+    location: "Kathmandu, Nepal",
     xp: 1250,
     level: 5,
+    bazaarTokens: 45,
+    friends: ["user_2", "user_3"],
+    joinedDate: "2024-01-15",
     purchases: 12,
     favorites: products.slice(0, 4)
   };
@@ -36,16 +51,11 @@ const Profile = () => {
         {/* Profile Header */}
         <Card className="p-6 mb-8">
           <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
-            <div className="relative group">
-              <img
-                src={user.avatar}
-                alt={user.name}
-                className="w-24 h-24 rounded-full border-4 border-primary"
-              />
-              <button className="absolute bottom-0 right-0 bg-primary text-primary-foreground p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-                <Camera className="h-4 w-4" />
-              </button>
-            </div>
+            <img
+              src={user.avatar}
+              alt={user.name}
+              className="w-24 h-24 rounded-full border-4 border-primary"
+            />
             
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
@@ -56,7 +66,9 @@ const Profile = () => {
                 </Badge>
               </div>
               <p className="text-muted-foreground mb-2">{user.email}</p>
-              <p className="text-sm text-muted-foreground">{user.phone}</p>
+              {user.location && (
+                <p className="text-sm text-muted-foreground">{user.location}</p>
+              )}
               
               {/* XP Progress Bar */}
               <div className="mt-4">
@@ -75,9 +87,22 @@ const Profile = () => {
               </div>
             </div>
 
-            <Button variant="outline">Edit Profile</Button>
+            <div className="flex gap-2">
+              <Button variant="outline" onClick={() => setEditDialogOpen(true)}>
+                {t('profile.editProfile')}
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => navigate(`/profile/${user.username}`)}
+              >
+                <Users className="h-4 w-4 mr-2" />
+                View Profile
+              </Button>
+            </div>
           </div>
         </Card>
+
+        <EditProfileDialog open={editDialogOpen} onOpenChange={setEditDialogOpen} />
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
@@ -87,7 +112,7 @@ const Profile = () => {
                 <ShoppingBag className="h-6 w-6 text-primary" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{user.purchases}</p>
+                <p className="text-2xl font-bold">{'purchases' in user ? user.purchases : 0}</p>
                 <p className="text-sm text-muted-foreground">Total Purchases</p>
               </div>
             </div>
@@ -99,7 +124,7 @@ const Profile = () => {
                 <Heart className="h-6 w-6 text-red-500" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{user.favorites.length}</p>
+                <p className="text-2xl font-bold">{'favorites' in user ? user.favorites.length : 0}</p>
                 <p className="text-sm text-muted-foreground">Saved Items</p>
               </div>
             </div>
@@ -138,7 +163,7 @@ const Profile = () => {
           {/* Favorites Tab */}
           <TabsContent value="favorites">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {user.favorites.map((product) => (
+              {('favorites' in user ? user.favorites : products.slice(0, 4)).map((product) => (
                 <ProductCard
                   key={product.id}
                   product={product}

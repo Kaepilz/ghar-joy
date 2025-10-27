@@ -1,9 +1,13 @@
-import { Store, Upload, DollarSign, Users } from "lucide-react";
+import { Store, Upload, DollarSign, Users, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useLanguage } from "@/context/LanguageContext";
 
 const Sell = () => {
+  const navigate = useNavigate();
+  const { t } = useLanguage();
+  
   return (
     <div className="container mx-auto px-4 py-16">
       <div className="max-w-4xl mx-auto text-center mb-12">
@@ -13,6 +17,15 @@ const Sell = () => {
         <p className="text-lg text-muted-foreground">
           Join thousands of sellers reaching customers across Nepal
         </p>
+        <Button
+          variant="hero"
+          size="lg"
+          className="mt-6 gap-2"
+          onClick={() => navigate('/upload-product')}
+        >
+          <Package className="h-5 w-5" />
+          Upload Product Now
+        </Button>
       </div>
 
       <div className="grid md:grid-cols-3 gap-6 mb-12">
